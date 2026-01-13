@@ -1,7 +1,0 @@
-{
-  "name": "Lumière Beauty Salon",
-  "description": "A premium luxury beauty salon website featuring clean, minimal aesthetics, elegant typography, and a seamless booking experience.",
-  "requestFramePermissions": [
-    "geolocation"
-  ]
-}

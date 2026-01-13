@@ -1,0 +1,352 @@
+<?php
+require_once "language.php";
+if (!isset($config) || !is_array($config)) {
+    $config = require __DIR__ . "/../config.php";
+}
+?>
+<!DOCTYPE html>
+<html lang="<?php echo getCurrentLang(); ?>">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <?php
+    // SEO Defaults
+    $meta_title = isset($page_title)
+        ? $page_title . " | " . __t("brand_name")
+        : __t("brand_name") . " | " . __t("slogan");
+    $meta_desc = isset($page_description)
+        ? $page_description
+        : __t("meta.description");
+    $meta_keys = isset($page_keywords) ? $page_keywords : __t("meta.keywords");
+
+    // Canonical URL construction
+    $protocol =
+        isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on"
+        ? "https"
+        : "http";
+    $canonical_url =
+        $protocol .
+        "://" .
+        $_SERVER["HTTP_HOST"] .
+        strtok($_SERVER["REQUEST_URI"], "?");
+    ?>
+
+    <title><?php echo $meta_title; ?></title>
+    <meta name="description" content="<?php echo $meta_desc; ?>">
+    <meta name="keywords" content="<?php echo $meta_keys; ?>">
+    <link rel="canonical" href="<?php echo $canonical_url; ?>">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?php echo $canonical_url; ?>">
+    <meta property="og:title" content="<?php echo $meta_title; ?>">
+    <meta property="og:description" content="<?php echo $meta_desc; ?>">
+    <meta property="og:site_name" content="<?php echo __t("brand_name"); ?>">
+    <!-- You might want to add a default og:image here -->
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="<?php echo $canonical_url; ?>">
+    <meta property="twitter:title" content="<?php echo $meta_title; ?>">
+    <meta property="twitter:description" content="<?php echo $meta_desc; ?>">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Poppins:wght@200;300;400;500&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nude: {
+                            50: '#FDFBF9',
+                            100: '#F8F4EF',
+                            200: '#EFE6DA',
+                            300: '#E4D3BF',
+                            400: '#D5B799',
+                            500: '#C19A74'
+                        },
+                        gold: {
+                            400: '#D4AF37',
+                            500: '#B8860B'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Poppins"', 'sans-serif']
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 1s ease-out forwards',
+                        'slide-up': 'slideUp 0.8s ease-out forwards'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FDFBF9;
+            color: #4A4540;
+        }
+
+        .luxury-shadow {
+            box-shadow: 0 10px 40px -10px rgba(193, 154, 116, 0.1);
+        }
+
+        .masonry-grid {
+            column-count: 2;
+            column-gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .masonry-grid {
+                column-count: 3;
+            }
+        }
+
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+
+<body class="font-sans">
+    <?php
+    $current_page = pathinfo(basename($_SERVER["PHP_SELF"]), PATHINFO_FILENAME);
+    $navLinks = [
+        ["name" => __t("nav.home"), "path" => "index"],
+        ["name" => __t("nav.medical_units"), "path" => "tibbi-birimler"],
+        ["name" => __t("nav.gallery"), "path" => "galeri"],
+        ["name" => __t("nav.locations"), "path" => "subelerimiz"],
+        ["name" => __t("nav.contact"), "path" => "iletisim"],
+    ];
+    ?>
+    <nav class="sticky top-0 z-50 bg-nude-50/80 backdrop-blur-md border-b border-nude-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="index"
+                        class="font-serif text-3xl tracking-widest text-nude-500 hover:text-nude-400 transition-colors">
+                        <?php echo __t("brand_name"); ?>
+                    </a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <div class="flex items-baseline space-x-8">
+                        <?php foreach ($navLinks as $link): ?>
+                            <?php if ($link["path"] == "subelerimiz"): ?>
+                                <!-- Hospitals Dropdown -->
+                                <div class="relative group">
+                                    <button
+                                        class="text-sm font-light uppercase tracking-widest hover:text-nude-500 transition-colors duration-300 flex items-center gap-1">
+                                        <?php echo __t("nav.hospitals"); ?>
+                                        <svg class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
+                                    <div
+                                        class="absolute left-0 mt-2 w-64 bg-white rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 z-50 border border-nude-100">
+                                        <div class="py-2">
+                                            <?php
+                                            foreach ($config['branches'] as $branch):
+                                                $b_name = getCurrentLang() == "tr" ? $branch["name_tr"] : $branch["name_en"];
+                                                ?>
+                                                <a href="hastane-detay?id=<?php echo $branch['id']; ?>"
+                                                    class="block px-6 py-3 text-sm text-gray-700 hover:bg-nude-50 hover:text-nude-600 transition-colors">
+                                                    <?php echo $b_name; ?>
+                                                </a>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+
+                            <a href="<?php echo $link["path"]; ?>" class="text-sm font-light uppercase tracking-widest hover:text-nude-500 transition-colors duration-300 <?php echo $current_page ==
+                                   $link["path"]
+                                   ? "text-nude-500 font-medium"
+                                   : ""; ?>">
+                                <?php echo $link["name"]; ?>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <div class="flex items-center space-x-6 pl-8 border-l border-nude-200">
+                        <!-- Language Switcher Dropdown -->
+                        <div class="relative group">
+                            <?php
+                            $currentLang = getCurrentLang();
+                            $languages = getAvailableLanguages();
+                            $currentInfo = $languages[$currentLang];
+                            ?>
+                            <button
+                                class="flex items-center gap-2 text-sm font-light tracking-widest hover:text-nude-500 transition-colors duration-300">
+                                <?php if ($currentLang == 'ku'): ?>
+                                    <img src="images/flags/ku.svg" width="20" height="14" alt="Kurdî"
+                                        class="rounded-sm shadow-sm object-cover">
+                                <?php else: ?>
+                                    <img src="https://flagcdn.com/w40/<?php echo $currentLang == 'en' ? 'gb' : $currentLang; ?>.png"
+                                        width="20" height="14" alt="<?php echo $currentInfo['name']; ?>"
+                                        class="rounded-sm shadow-sm">
+                                <?php endif; ?>
+                                <span class="uppercase"><?php echo $currentLang; ?></span>
+                                <svg class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+
+                            <!-- Dropdown Menu -->
+                            <div
+                                class="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100 z-50 border border-nude-100">
+                                <div class="py-2">
+                                    <?php foreach ($languages as $code => $info): ?>
+                                        <a href="<?php echo getLangUrl($code); ?>"
+                                            class="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-nude-50 hover:text-nude-600 transition-colors <?php echo $code == $currentLang ? 'bg-nude-50/50 text-nude-600 font-medium' : ''; ?>">
+                                            <?php if ($code == 'ku'): ?>
+                                                <img src="images/flags/ku.svg" width="18" height="12" alt="Kurdî"
+                                                    class="rounded-sm shadow-sm object-cover">
+                                            <?php else: ?>
+                                                <img src="https://flagcdn.com/w40/<?php echo $code == 'en' ? 'gb' : $code; ?>.png"
+                                                    width="18" height="12" alt="<?php echo $info['name']; ?>"
+                                                    class="rounded-sm shadow-sm">
+                                            <?php endif; ?>
+                                            <span><?php echo $info['name']; ?></span>
+                                        </a>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="<?php echo $config["social"]["instagram"]; ?>" target="_blank"
+                            rel="noopener noreferrer"
+                            class="bg-nude-500 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-nude-500 transition-all transform hover:scale-105 shadow-sm flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                            </svg>
+                            Instagram
+                        </a>
+                    </div>
+                </div>
+
+                <div class="md:hidden flex items-center space-x-4">
+                    <button id="mobile-menu-button" class="text-nude-500 hover:text-nude-400 focus:outline-none">
+                        <svg id="menu-icon" class="h-8 w-8" fill="none" strokeLinecap="round" strokeLinejoin="round"
+                            strokeWidth="1.5" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-nude-50 animate-fade-in border-b border-nude-100">
+            <div class="px-4 pt-4 pb-8 space-y-4 text-center">
+                <?php foreach ($navLinks as $link): ?>
+                    <?php if ($link["path"] == "subelerimiz"): ?>
+                        <button onclick="document.getElementById('mobile-hospitals-list').classList.toggle('hidden')"
+                            class="flex items-center justify-between w-full px-4 py-2 text-lg font-serif tracking-widest hover:text-nude-500 transition-colors">
+                            <span><?php echo __t("nav.hospitals"); ?></span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="mobile-hospitals-list" class="hidden bg-nude-100/30 py-2">
+                            <?php
+                            foreach ($config['branches'] as $branch):
+                                $b_name = getCurrentLang() == "tr" ? $branch["name_tr"] : $branch["name_en"];
+                                ?>
+                                <a href="hastane-detay?id=<?php echo $branch['id']; ?>"
+                                    class="block px-8 py-3 text-base text-gray-600 hover:text-nude-600">
+                                    <?php echo $b_name; ?>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <a href="<?php echo $link["path"]; ?>"
+                        class="block text-lg font-serif tracking-widest hover:text-nude-500 transition-colors">
+                        <?php echo $link["name"]; ?>
+                    </a>
+                <?php endforeach; ?>
+
+                <!-- Mobile Language Switcher (Collapsible) -->
+                <div class="border-t border-nude-100 mt-4 pt-4">
+                    <button onclick="document.getElementById('mobile-lang-list').classList.toggle('hidden')"
+                        class="flex items-center justify-between w-full px-4 py-2 text-sm font-light tracking-widest text-nude-500">
+                        <span class="flex items-center gap-2">
+                            <span class="uppercase"><?php echo __t('language'); ?>:
+                                <?php echo getCurrentLang(); ?></span>
+                        </span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div id="mobile-lang-list" class="hidden mt-2 pb-2">
+                        <?php foreach (getAvailableLanguages() as $code => $info): ?>
+                            <a href="<?php echo getLangUrl($code); ?>"
+                                class="flex items-center gap-3 px-6 py-3 text-sm text-gray-600 hover:bg-nude-100/50 <?php echo $code == getCurrentLang() ? 'bg-nude-50 text-nude-600 font-medium' : ''; ?>">
+                                <?php if ($code == 'ku'): ?>
+                                    <img src="images/flags/ku.svg" width="20" height="14" alt="Kurdî"
+                                        class="rounded-sm shadow-sm object-cover">
+                                <?php else: ?>
+                                    <img src="https://flagcdn.com/w40/<?php echo $code == 'en' ? 'gb' : $code; ?>.png"
+                                        width="20" height="14" alt="<?php echo $info['name']; ?>" class="rounded-sm shadow-sm">
+                                <?php endif; ?>
+                                <span><?php echo $info['name']; ?></span>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <!-- Mobile Instagram Button -->
+                <a href="<?php echo $config["social"]["instagram"]; ?>" target="_blank" rel="noopener noreferrer"
+                    class="inline-flex items-center justify-center gap-2 bg-nude-400 text-white px-8 py-3 rounded-full text-base font-medium shadow-md w-full max-w-xs mt-4 hover:bg-nude-500 transition-all">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                    </svg>
+                    Instagram
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+
+        menuButton.addEventListener('click', () => {
+            const isOpen = !mobileMenu.classList.contains('hidden');
+            if (!isOpen) {
+                mobileMenu.classList.remove('hidden');
+                menuIcon.innerHTML = '<path d="M6 18L18 6M6 6l12 12" />';
+            } else {
+                mobileMenu.classList.add('hidden');
+                menuIcon.innerHTML = '<path d="M4 6h16M4 12h16m-7 6h7" />';
+            }
+        });
+    </script>
+    <ctrl63>
