@@ -10,7 +10,7 @@ $page_description =
 include "includes/header.php";
 ?>
 
-<main class="bg-nude-50 min-h-screen py-24 px-4">
+<main id="main-content" class="bg-nude-50 min-h-screen py-24 px-4">
   <div class="max-w-7xl mx-auto">
     <section class="text-center mb-16 animate-slide-up" aria-labelledby="gallery-heading">
       <span class="text-nude-400 font-medium tracking-widest uppercase text-xs mb-4 block"><?php echo $lang ==

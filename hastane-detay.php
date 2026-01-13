@@ -52,7 +52,7 @@ include "includes/header.php";
 
 ?>
 
-<main class="bg-nude-50 min-h-screen py-20 px-4">
+<main id="main-content" class="bg-nude-50 min-h-screen py-20 px-4">
     <div class="max-w-7xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
             <!-- Left Side: Image -->

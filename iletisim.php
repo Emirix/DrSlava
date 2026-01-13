@@ -10,7 +10,7 @@ $page_description =
 include "includes/header.php";
 ?>
 
-<main class="bg-nude-50 min-h-screen py-24 px-4">
+<main id="main-content" class="bg-nude-50 min-h-screen py-24 px-4">
   <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
     <section class="space-y-12 animate-slide-up" aria-labelledby="contact-heading">
       <div class="space-y-6">

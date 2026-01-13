@@ -58,6 +58,8 @@ if (!isset($config) || !is_array($config)) {
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Poppins:wght@200;300;400;500&display=swap"
         rel="stylesheet">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="includes/responsive.css">
     <script>
         tailwind.config = {
             theme: {
@@ -123,10 +125,81 @@ if (!isset($config) || !is_array($config)) {
             break-inside: avoid;
             margin-bottom: 1.5rem;
         }
+
+        /* Mobile menu - hidden by default, shown with .open class */
+        #mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        #mobile-menu.open {
+            max-height: 100vh;
+            opacity: 1;
+        }
+
+        /* Mobile dropdown submenu animations */
+        .mobile-submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+
+        .mobile-submenu.open {
+            max-height: 400px;
+        }
+
+        /* Hamburger icon animation */
+        .hamburger-line {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background-color: currentColor;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            transform-origin: center;
+        }
+
+        .hamburger-active .hamburger-line:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .hamburger-active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-active .hamburger-line:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Prevent body scroll when menu is open */
+        body.menu-open {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+        }
+
+        /* Screen reader only text */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
     </style>
 </head>
 
 <body class="font-sans">
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">
+        <?php echo getCurrentLang() == 'tr' ? 'Ana içeriğe atla' : 'Skip to main content'; ?>
+    </a>
+
     <?php
     $current_page = pathinfo(basename($_SERVER["PHP_SELF"]), PATHINFO_FILENAME);
     $navLinks = [
@@ -249,29 +322,37 @@ if (!isset($config) || !is_array($config)) {
                 </div>
 
                 <div class="md:hidden flex items-center space-x-4">
-                    <button id="mobile-menu-button" class="text-nude-500 hover:text-nude-400 focus:outline-none">
-                        <svg id="menu-icon" class="h-8 w-8" fill="none" strokeLinecap="round" strokeLinejoin="round"
-                            strokeWidth="1.5" viewBox="0 0 24 24" stroke="currentColor">
-                            <path d="M4 6h16M4 12h16m-7 6h7" />
-                        </svg>
+                    <button id="mobile-menu-button"
+                        class="text-nude-500 hover:text-nude-400 focus:outline-none p-2 rounded-lg focus:ring-2 focus:ring-nude-300"
+                        aria-expanded="false" aria-controls="mobile-menu"
+                        aria-label="<?php echo getCurrentLang() == 'tr' ? 'Menüyü aç/kapat' : 'Toggle menu'; ?>">
+                        <span class="sr-only"><?php echo getCurrentLang() == 'tr' ? 'Ana menü' : 'Main menu'; ?></span>
+                        <div id="hamburger-icon" class="flex flex-col justify-center items-center w-6 h-6 space-y-1.5">
+                            <span class="hamburger-line"></span>
+                            <span class="hamburger-line"></span>
+                            <span class="hamburger-line"></span>
+                        </div>
                     </button>
                 </div>
             </div>
         </div>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-nude-50 animate-fade-in border-b border-nude-100">
+        <div id="mobile-menu" class="md:hidden bg-nude-50 border-b border-nude-100" role="navigation"
+            aria-label="<?php echo getCurrentLang() == 'tr' ? 'Mobil navigasyon' : 'Mobile navigation'; ?>">
             <div class="px-4 pt-4 pb-8 space-y-4 text-center">
                 <?php foreach ($navLinks as $link): ?>
                     <?php if ($link["path"] == "subelerimiz"): ?>
-                        <button onclick="document.getElementById('mobile-hospitals-list').classList.toggle('hidden')"
-                            class="flex items-center justify-between w-full px-4 py-2 text-lg font-serif tracking-widest hover:text-nude-500 transition-colors">
+                        <button onclick="toggleMobileSubmenu('mobile-hospitals-list', this)"
+                            class="flex items-center justify-center w-full px-4 py-3 text-lg font-serif tracking-widest hover:text-nude-500 transition-colors"
+                            aria-expanded="false">
                             <span><?php echo __t("nav.hospitals"); ?></span>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
-                        <div id="mobile-hospitals-list" class="hidden bg-nude-100/30 py-2">
+                        <div id="mobile-hospitals-list" class="mobile-submenu bg-nude-100/30">
                             <?php
                             foreach ($config['branches'] as $branch):
                                 $b_name = getCurrentLang() == "tr" ? $branch["name_tr"] : $branch["name_en"];
@@ -292,8 +373,9 @@ if (!isset($config) || !is_array($config)) {
 
                 <!-- Mobile Language Switcher (Collapsible) -->
                 <div class="border-t border-nude-100 mt-4 pt-4">
-                    <button onclick="document.getElementById('mobile-lang-list').classList.toggle('hidden')"
-                        class="flex items-center justify-between w-full px-4 py-2 text-sm font-light tracking-widest text-nude-500">
+                    <button onclick="toggleMobileSubmenu('mobile-lang-list', this)"
+                        class="flex items-center justify-between w-full px-4 py-3 text-sm font-light tracking-widest text-nude-500"
+                        aria-expanded="false">
                         <span class="flex items-center gap-2">
                             <span class="uppercase"><?php echo __t('language'); ?>:
                                 <?php echo getCurrentLang(); ?></span>
@@ -303,7 +385,7 @@ if (!isset($config) || !is_array($config)) {
                             </path>
                         </svg>
                     </button>
-                    <div id="mobile-lang-list" class="hidden mt-2 pb-2">
+                    <div id="mobile-lang-list" class="mobile-submenu mt-2">
                         <?php foreach (getAvailableLanguages() as $code => $info): ?>
                             <a href="<?php echo getLangUrl($code); ?>"
                                 class="flex items-center gap-3 px-6 py-3 text-sm text-gray-600 hover:bg-nude-100/50 <?php echo $code == getCurrentLang() ? 'bg-nude-50 text-nude-600 font-medium' : ''; ?>">
@@ -334,19 +416,83 @@ if (!isset($config) || !is_array($config)) {
     </nav>
 
     <script>
-        const menuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const menuIcon = document.getElementById('menu-icon');
+        // Mobile submenu toggle function
+        function toggleMobileSubmenu(submenuId, button) {
+            const submenu = document.getElementById(submenuId);
+            if (!submenu) return;
 
-        menuButton.addEventListener('click', () => {
-            const isOpen = !mobileMenu.classList.contains('hidden');
-            if (!isOpen) {
-                mobileMenu.classList.remove('hidden');
-                menuIcon.innerHTML = '<path d="M6 18L18 6M6 6l12 12" />';
+            const isOpen = submenu.classList.contains('open');
+            const arrow = button.querySelector('svg');
+
+            if (isOpen) {
+                submenu.classList.remove('open');
+                button.setAttribute('aria-expanded', 'false');
+                if (arrow) arrow.style.transform = 'rotate(0deg)';
             } else {
-                mobileMenu.classList.add('hidden');
-                menuIcon.innerHTML = '<path d="M4 6h16M4 12h16m-7 6h7" />';
+                submenu.classList.add('open');
+                button.setAttribute('aria-expanded', 'true');
+                if (arrow) arrow.style.transform = 'rotate(180deg)';
             }
-        });
+        }
+
+        (function () {
+            const menuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+
+            if (!menuButton || !mobileMenu) return;
+
+            let isOpen = false;
+
+            function toggleMenu() {
+                isOpen = !isOpen;
+
+                // Toggle menu visibility with animation
+                if (isOpen) {
+                    mobileMenu.classList.add('open');
+                    hamburgerIcon.classList.add('hamburger-active');
+                    menuButton.setAttribute('aria-expanded', 'true');
+                    document.body.classList.add('menu-open');
+                } else {
+                    mobileMenu.classList.remove('open');
+                    hamburgerIcon.classList.remove('hamburger-active');
+                    menuButton.setAttribute('aria-expanded', 'false');
+                    document.body.classList.remove('menu-open');
+
+                    // Close all submenus when main menu closes
+                    mobileMenu.querySelectorAll('.mobile-submenu.open').forEach(sub => {
+                        sub.classList.remove('open');
+                    });
+                    mobileMenu.querySelectorAll('button[aria-expanded="true"]').forEach(btn => {
+                        btn.setAttribute('aria-expanded', 'false');
+                        const arrow = btn.querySelector('svg');
+                        if (arrow) arrow.style.transform = 'rotate(0deg)';
+                    });
+                }
+            }
+
+            menuButton.addEventListener('click', toggleMenu);
+
+            // Close menu on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && isOpen) {
+                    toggleMenu();
+                }
+            });
+
+            // Close menu when clicking on a link
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (isOpen) toggleMenu();
+                });
+            });
+
+            // Close menu on resize to desktop
+            window.addEventListener('resize', () => {
+                if (window.innerWidth >= 768 && isOpen) {
+                    toggleMenu();
+                }
+            });
+        })();
     </script>
     <ctrl63>

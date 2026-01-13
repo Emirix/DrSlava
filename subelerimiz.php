@@ -28,7 +28,7 @@ $country_flags = [
 ];
 ?>
 
-<main class="bg-nude-50 min-h-screen py-24 px-4">
+<main id="main-content" class="bg-nude-50 min-h-screen py-24 px-4">
   <div class="max-w-7xl mx-auto">
     <section class="text-center mb-20 animate-slide-up" aria-labelledby="branches-heading">
       <h1 id="branches-heading" class="font-serif font-bold text-5xl mb-6">

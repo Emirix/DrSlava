@@ -1,0 +1,590 @@
+/*
+ * Dr Slava - Responsive Enhancements
+ * Mobile-First Design Strategy
+ * Breakpoints: 320px (mobile) -> 480px -> 640px -> 768px -> 1024px -> 1280px -> 1536px (4K)
+ */
+
+/* ==========================================================================
+   1. BASE RESPONSIVE RESETS & UTILITIES
+   ========================================================================== */
+
+/* Prevent horizontal overflow globally */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Ensure all images are responsive by default */
+img, video, picture, canvas, svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Box sizing reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Touch-friendly tap targets (minimum 44x44px) */
+button, 
+a, 
+input[type="submit"], 
+input[type="button"],
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Focus visible for accessibility */
+:focus-visible {
+  outline: 2px solid #C19A74;
+  outline-offset: 2px;
+}
+
+/* Skip link for accessibility */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  background: #C19A74;
+  color: white;
+  padding: 1rem;
+  z-index: 9999;
+  transition: top 0.3s;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* ==========================================================================
+   2. RESPONSIVE TYPOGRAPHY SYSTEM
+   ========================================================================== */
+
+/* Fluid typography using clamp() */
+html {
+  font-size: 16px;
+}
+
+/* Base small screens */
+@media (max-width: 479px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* 4K displays */
+@media (min-width: 2560px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+/* Responsive heading scales */
+.text-responsive-xs {
+  font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+}
+
+.text-responsive-sm {
+  font-size: clamp(0.75rem, 2vw, 0.875rem);
+}
+
+.text-responsive-base {
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
+}
+
+.text-responsive-lg {
+  font-size: clamp(1rem, 3vw, 1.125rem);
+}
+
+.text-responsive-xl {
+  font-size: clamp(1.125rem, 3.5vw, 1.25rem);
+}
+
+.text-responsive-2xl {
+  font-size: clamp(1.25rem, 4vw, 1.5rem);
+}
+
+.text-responsive-3xl {
+  font-size: clamp(1.5rem, 5vw, 1.875rem);
+}
+
+.text-responsive-4xl {
+  font-size: clamp(1.875rem, 6vw, 2.25rem);
+}
+
+.text-responsive-5xl {
+  font-size: clamp(2.25rem, 7vw, 3rem);
+}
+
+.text-responsive-6xl {
+  font-size: clamp(2.75rem, 8vw, 3.75rem);
+}
+
+/* ==========================================================================
+   3. MOBILE NAVIGATION ENHANCEMENTS
+   ========================================================================== */
+
+/* Mobile menu overlay */
+.mobile-menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 40;
+}
+
+.mobile-menu-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Mobile menu slide animation */
+#mobile-menu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-in-out;
+}
+
+#mobile-menu.open {
+  max-height: 100vh;
+}
+
+/* Hamburger menu animation */
+.hamburger-line {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: currentColor;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform-origin: center;
+}
+
+.hamburger-active .hamburger-line:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger-active .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-active .hamburger-line:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Mobile dropdown styling */
+.mobile-dropdown {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+}
+
+.mobile-dropdown.open {
+  max-height: 500px;
+}
+
+/* ==========================================================================
+   4. RESPONSIVE LAYOUT UTILITIES
+   ========================================================================== */
+
+/* Container with fluid padding */
+.container-responsive {
+  width: 100%;
+  padding-left: clamp(1rem, 5vw, 2rem);
+  padding-right: clamp(1rem, 5vw, 2rem);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Responsive spacing */
+.py-responsive {
+  padding-top: clamp(3rem, 8vw, 6rem);
+  padding-bottom: clamp(3rem, 8vw, 6rem);
+}
+
+.px-responsive {
+  padding-left: clamp(1rem, 4vw, 2rem);
+  padding-right: clamp(1rem, 4vw, 2rem);
+}
+
+.gap-responsive {
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+/* Responsive margins */
+.mb-responsive {
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+.mt-responsive {
+  margin-top: clamp(2rem, 5vw, 4rem);
+}
+
+/* ==========================================================================
+   5. HERO SECTION RESPONSIVE FIXES
+   ========================================================================== */
+
+/* Hero section mobile adjustments */
+@media (max-width: 1023px) {
+  .hero-three-column {
+    grid-template-columns: 1fr !important;
+    min-height: auto !important;
+  }
+  
+  .hero-three-column > div:first-child,
+  .hero-three-column > div:last-child {
+    height: 250px !important;
+  }
+  
+  .hero-three-column > div:nth-child(2) {
+    order: -1;
+    padding: 2rem 1rem;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 479px) {
+  .hero-three-column > div:first-child,
+  .hero-three-column > div:last-child {
+    height: 200px !important;
+  }
+}
+
+/* ==========================================================================
+   6. GRID SYSTEM RESPONSIVE ADJUSTMENTS
+   ========================================================================== */
+
+/* Branch grid - better mobile handling */
+@media (max-width: 479px) {
+  .grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Medical units grid adjustments */
+@media (max-width: 639px) {
+  .grid-cols-1.sm\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* 4K grid - more columns */
+@media (min-width: 2560px) {
+  .grid-cols-1.md\:grid-cols-2.lg\:grid-cols-4 {
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  }
+  
+  .grid-cols-2.md\:grid-cols-3.lg\:grid-cols-4.xl\:grid-cols-6 {
+    grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
+  }
+}
+
+/* ==========================================================================
+   7. CARD & COMPONENT RESPONSIVE STYLES
+   ========================================================================== */
+
+/* Cards become full width on very small screens */
+@media (max-width: 479px) {
+  .luxury-shadow {
+    box-shadow: 0 4px 20px -5px rgba(193, 154, 116, 0.15);
+  }
+  
+  /* Reduce border radius on mobile */
+  .rounded-3xl {
+    border-radius: 1rem;
+  }
+  
+  /* Reduce padding on mobile cards */
+  .p-8 {
+    padding: 1.25rem;
+  }
+  
+  .p-6 {
+    padding: 1rem;
+  }
+}
+
+/* ==========================================================================
+   8. FOOTER RESPONSIVE ENHANCEMENTS
+   ========================================================================== */
+
+/* WhatsApp button responsive positioning */
+@media (max-width: 639px) {
+  .fixed.bottom-8.right-8 {
+    bottom: 1rem;
+    right: 1rem;
+  }
+  
+  /* Hide WhatsApp tooltip on mobile */
+  .fixed.bottom-8.right-8 span {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   9. FORM & INPUT RESPONSIVE STYLES
+   ========================================================================== */
+
+/* Responsive form inputs */
+input, textarea, select {
+  font-size: 16px; /* Prevents iOS zoom */
+  max-width: 100%;
+}
+
+@media (max-width: 639px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  textarea {
+    padding: 0.875rem 1rem;
+  }
+}
+
+/* ==========================================================================
+   10. TABLE RESPONSIVE STYLES
+   ========================================================================== */
+
+/* Make tables scrollable on mobile */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ==========================================================================
+   11. IMAGE & MEDIA RESPONSIVE HANDLING
+   ========================================================================== */
+
+/* Aspect ratio containers */
+.aspect-responsive {
+  aspect-ratio: 16/9;
+}
+
+@media (max-width: 639px) {
+  .aspect-responsive {
+    aspect-ratio: 4/3;
+  }
+}
+
+/* Object fit utilities for images */
+.img-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.img-contain {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ==========================================================================
+   12. MASONRY GRID RESPONSIVE
+   ========================================================================== */
+
+/* Gallery masonry responsive */
+@media (max-width: 479px) {
+  .masonry-grid {
+    column-count: 1;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+  .masonry-grid {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 1280px) {
+  .masonry-grid {
+    column-count: 4;
+  }
+}
+
+@media (min-width: 1536px) {
+  .masonry-grid {
+    column-count: 5;
+  }
+}
+
+/* ==========================================================================
+   13. CONTACT PAGE RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  .lg\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Stack contact sections */
+  main .grid.lg\:grid-cols-2 > section:last-child {
+    order: -1;
+    margin-bottom: 2rem;
+  }
+}
+
+/* ==========================================================================
+   14. BRANCHES/LOCATIONS PAGE RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  /* Stack country and branches vertically */
+  .lg\:flex-row {
+    flex-direction: column !important;
+  }
+  
+  .lg\:w-1\/4 {
+    width: 100% !important;
+  }
+  
+  .lg\:w-3\/4 {
+    width: 100% !important;
+  }
+  
+  /* Center country heading on mobile */
+  .lg\:w-1\/4 .sticky {
+    position: relative !important;
+    top: auto !important;
+    text-align: center;
+  }
+  
+  .lg\:w-1\/4 .flex.items-center {
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   15. HOSPITAL DETAIL PAGE RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  /* Stack hospital detail layout */
+  .lg\:grid-cols-2.items-start {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  
+  /* Adjust hospital title size */
+  .text-5xl.text-gray-800 {
+    font-size: clamp(1.875rem, 6vw, 3rem);
+  }
+}
+
+/* ==========================================================================
+   16. NAVIGATION DROPDOWN RESPONSIVE
+   ========================================================================== */
+
+/* Prevent dropdown from going off-screen */
+@media (min-width: 768px) {
+  .group .absolute.right-0 {
+    right: 0;
+    left: auto;
+  }
+  
+  .group .absolute.left-0 {
+    left: 0;
+    right: auto;
+  }
+}
+
+/* ==========================================================================
+   17. PRINT STYLES (Accessibility)
+   ========================================================================== */
+
+@media print {
+  nav, footer, .fixed {
+    display: none !important;
+  }
+  
+  main {
+    padding: 0 !important;
+  }
+  
+  * {
+    color: black !important;
+    background: white !important;
+  }
+}
+
+/* ==========================================================================
+   18. REDUCED MOTION (Accessibility)
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   19. HIGH CONTRAST MODE (Accessibility)
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+  .luxury-shadow {
+    box-shadow: none;
+    border: 2px solid currentColor;
+  }
+  
+  .border-nude-100,
+  .border-nude-200 {
+    border-color: currentColor;
+  }
+}
+
+/* ==========================================================================
+   20. LANDSCAPE MOBILE FIXES
+   ========================================================================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+  /* Reduce nav height in landscape */
+  nav .h-20 {
+    height: 3.5rem;
+  }
+  
+  /* Reduce hero height */
+  .min-h-\[85vh\] {
+    min-height: 100vh;
+  }
+  
+  /* Reduce section padding */
+  .py-24 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+}
+
+/* ==========================================================================
+   21. SAFE AREA INSETS (for notched phones)
+   ========================================================================== */
+
+@supports (padding: env(safe-area-inset-bottom)) {
+  .fixed.bottom-8 {
+    bottom: calc(1rem + env(safe-area-inset-bottom));
+  }
+  
+  footer {
+    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* ==========================================================================
+   22. SCROLL BEHAVIOR
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent scroll when mobile menu is open */
+body.menu-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}

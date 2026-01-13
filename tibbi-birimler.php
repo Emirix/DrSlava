@@ -27,7 +27,7 @@ foreach ($units as $unit) {
 ksort($grouped_units);
 ?>
 
-<main class="bg-nude-50 min-h-screen py-20 px-4">
+<main id="main-content" class="bg-nude-50 min-h-screen py-20 px-4">
     <div class="max-w-7xl mx-auto">
         <section class="text-center mb-16 animate-slide-up">
             <h1 class="font-serif font-bold text-5xl md:text-6xl mb-6">

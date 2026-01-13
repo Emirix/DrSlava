@@ -8,9 +8,9 @@ $page_description = __t("meta.description");
 include "includes/header.php";
 ?>
 
-<main class="overflow-hidden">
+<main id="main-content" class="overflow-hidden">
     <!-- Hero Section -->
-    <section class="relative min-h-[85vh] grid grid-cols-1 lg:grid-cols-3 bg-nude-100 overflow-hidden"
+    <section class="hero-three-column relative min-h-[85vh] grid grid-cols-1 lg:grid-cols-3 bg-nude-100 overflow-hidden"
         aria-label="<?php echo $lang == "tr" ? "Karşılama Ekranı" : "Welcome Screen"; ?>">
 
         <!-- Column 1: Hospital Image -->
