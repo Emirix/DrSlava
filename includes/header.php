@@ -1,36 +1,42 @@
 <?php
 require_once "language.php";
+require_once "config-helper.php";
 if (!isset($config) || !is_array($config)) {
     $config = require __DIR__ . "/../config.php";
 }
+
+// Get current page info for SEO
+$current_page = pathinfo(basename($_SERVER["PHP_SELF"]), PATHINFO_FILENAME);
+$current_lang = getCurrentLang();
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo getCurrentLang(); ?>">
+<html lang="<?php echo $current_lang; ?>" dir="ltr">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <?php
-    // SEO Defaults
+    // SEO Defaults with enhanced descriptions
     $meta_title = isset($page_title)
-        ? $page_title . " | " . __t("brand_name")
+        ? htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8') . " | " . __t("brand_name")
         : __t("brand_name") . " | " . __t("slogan");
     $meta_desc = isset($page_description)
-        ? $page_description
+        ? htmlspecialchars($page_description, ENT_QUOTES, 'UTF-8')
         : __t("meta.description");
-    $meta_keys = isset($page_keywords) ? $page_keywords : __t("meta.keywords");
+    $meta_keys = isset($page_keywords) ? htmlspecialchars($page_keywords, ENT_QUOTES, 'UTF-8') : __t("meta.keywords");
 
-    // Canonical URL construction
+    // Canonical URL construction (clean, without query params for main pages)
     $protocol =
         isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on"
         ? "https"
         : "http";
-    $canonical_url =
-        $protocol .
-        "://" .
-        $_SERVER["HTTP_HOST"] .
-        strtok($_SERVER["REQUEST_URI"], "?");
+    $base_url = $protocol . "://" . $_SERVER["HTTP_HOST"];
+    $canonical_url = $base_url . strtok($_SERVER["REQUEST_URI"], "?");
+
+    // Default OG image
+    $og_image = isset($page_image) ? $page_image : $base_url . "/DrSlava/images/og-default.jpg";
     ?>
 
     <title><?php echo $meta_title; ?></title>
@@ -38,19 +44,162 @@ if (!isset($config) || !is_array($config)) {
     <meta name="keywords" content="<?php echo $meta_keys; ?>">
     <link rel="canonical" href="<?php echo $canonical_url; ?>">
 
+    <!-- Robots meta -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#C19A74">
+    <meta name="msapplication-TileColor" content="#C19A74">
+
+    <!-- Hreflang tags for multilingual SEO -->
+    <?php
+    $available_langs = getAvailableLanguages();
+    $current_path = pathinfo(basename($_SERVER["PHP_SELF"]), PATHINFO_FILENAME);
+    $query_params = $_GET;
+    unset($query_params['lang']); // Remove lang param for clean URLs
+    $query_string = !empty($query_params) ? '?' . http_build_query($query_params) : '';
+
+    foreach ($available_langs as $lang_code => $lang_info):
+        ?>
+        <link rel="alternate" hreflang="<?php echo $lang_code; ?>"
+            href="<?php echo $base_url . '/DrSlava/' . $current_path . '?lang=' . $lang_code . ($query_string ? '&' . substr($query_string, 1) : ''); ?>">
+    <?php endforeach; ?>
+    <link rel="alternate" hreflang="x-default" href="<?php echo $canonical_url; ?>">
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?php echo $canonical_url; ?>">
     <meta property="og:title" content="<?php echo $meta_title; ?>">
     <meta property="og:description" content="<?php echo $meta_desc; ?>">
     <meta property="og:site_name" content="<?php echo __t("brand_name"); ?>">
-    <!-- You might want to add a default og:image here -->
+    <meta property="og:image" content="<?php echo $og_image; ?>">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale"
+        content="<?php echo $current_lang == 'tr' ? 'tr_TR' : ($current_lang == 'en' ? 'en_US' : ($current_lang == 'ru' ? 'ru_RU' : ($current_lang == 'fr' ? 'fr_FR' : 'tr_TR'))); ?>">
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="<?php echo $canonical_url; ?>">
-    <meta property="twitter:title" content="<?php echo $meta_title; ?>">
-    <meta property="twitter:description" content="<?php echo $meta_desc; ?>">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="<?php echo $canonical_url; ?>">
+    <meta name="twitter:title" content="<?php echo $meta_title; ?>">
+    <meta name="twitter:description" content="<?php echo $meta_desc; ?>">
+    <meta name="twitter:image" content="<?php echo $og_image; ?>">
+
+    <!-- JSON-LD Structured Data -->
+    <?php
+    // Prepare data for JSON-LD to avoid encoding issues
+    $json_ld_org = [
+        "@context" => "https://schema.org",
+        "@type" => "MedicalBusiness",
+        "@id" => $base_url . "/DrSlava/#organization",
+        "name" => __t('brand_name'),
+        "alternateName" => "Dr Slava Medical Aesthetics",
+        "url" => $base_url . "/DrSlava/",
+        "logo" => $base_url . "/DrSlava/images/logo.png",
+        "image" => $base_url . "/DrSlava/images/hospital.png",
+        "description" => __t('meta.description'),
+        "telephone" => $config['phone'],
+        "email" => $config['email'],
+        "address" => [
+            "@type" => "PostalAddress",
+            "streetAddress" => $config['address_main'],
+            "addressLocality" => "İzmir",
+            "addressCountry" => "TR"
+        ],
+        "geo" => [
+            "@type" => "GeoCoordinates",
+            "latitude" => "38.3744",
+            "longitude" => "27.0623"
+        ],
+        "openingHoursSpecification" => [
+            "@type" => "OpeningHoursSpecification",
+            "dayOfWeek" => ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            "opens" => "09:00",
+            "closes" => "20:00"
+        ],
+        "priceRange" => "$$$",
+        "medicalSpecialty" => ["Dermatology", "PlasticSurgery", "CosmeticMedicine"],
+        "sameAs" => [$config['social']['instagram']]
+    ];
+
+    // Add medical services to the schema
+    $units = array_slice($config['medical_units'], 0, 5);
+    $offer_items = [];
+    foreach ($units as $unit) {
+        $offer_items[] = [
+            "@type" => "Offer",
+            "itemOffered" => [
+                "@type" => "MedicalProcedure",
+                "name" => getConfigField($unit, 'title'),
+                "description" => getConfigField($unit, 'desc')
+            ]
+        ];
+    }
+    $json_ld_org["hasOfferCatalog"] = [
+        "@type" => "OfferCatalog",
+        "name" => "Medical Aesthetic Services",
+        "itemListElement" => $offer_items
+    ];
+    ?>
+    <script type="application/ld+json">
+    <?php echo json_encode($json_ld_org, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT); ?>
+    </script>
+
+    <?php if ($current_page === 'index'):
+        $json_ld_website = [
+            "@context" => "https://schema.org",
+            "@type" => "WebSite",
+            "name" => __t('brand_name'),
+            "url" => $base_url . "/DrSlava/",
+            "potentialAction" => [
+                "@type" => "SearchAction",
+                "target" => $base_url . "/DrSlava/tibbi-birimler?q={search_term_string}",
+                "query-input" => "required name=search_term_string"
+            ]
+        ];
+        ?>
+        <!-- WebSite Schema for Homepage -->
+        <script type="application/ld+json">
+                                                                <?php echo json_encode($json_ld_website, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT); ?>
+                                                                    </script>
+    <?php endif; ?>
+
+    <?php if ($current_page === 'iletisim'):
+        $json_ld_contact = [
+            "@context" => "https://schema.org",
+            "@type" => "ContactPage",
+            "name" => $meta_title,
+            "url" => $canonical_url,
+            "mainEntity" => [
+                "@type" => "Organization",
+                "name" => __t('brand_name'),
+                "contactPoint" => [
+                    "@type" => "ContactPoint",
+                    "telephone" => $config['phone'],
+                    "contactType" => "customer service",
+                    "email" => $config['email'],
+                    "availableLanguage" => ["Turkish", "English", "Russian", "French", "Kurdish"]
+                ]
+            ]
+        ];
+        ?>
+        <!-- ContactPage Schema -->
+        <script type="application/ld+json">
+                                                                <?php echo json_encode($json_ld_contact, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT); ?>
+                                                                    </script>
+    <?php endif; ?>
+
+    <!-- Preconnect to external domains for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://flagcdn.com">
+
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="https://images.unsplash.com">
+
+    <!-- Preload critical fonts -->
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -60,10 +209,14 @@ if (!isset($config) || !is_array($config)) {
         rel="stylesheet">
     <!-- Responsive CSS -->
     <link rel="stylesheet" href="includes/responsive.css">
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    screens: {
+                        'nav': '1268px',
+                    },
                     colors: {
                         nude: {
                             50: '#FDFBF9',
@@ -192,6 +345,7 @@ if (!isset($config) || !is_array($config)) {
             border-width: 0;
         }
     </style>
+
 </head>
 
 <body class="font-sans">
@@ -220,7 +374,7 @@ if (!isset($config) || !is_array($config)) {
                     </a>
                 </div>
 
-                <div class="hidden md:flex items-center space-x-8">
+                <div class="hidden nav:flex items-center space-x-8">
                     <div class="flex items-baseline space-x-8">
                         <?php foreach ($navLinks as $link): ?>
                             <?php if ($link["path"] == "subelerimiz"): ?>
@@ -240,7 +394,7 @@ if (!isset($config) || !is_array($config)) {
                                         <div class="py-2">
                                             <?php
                                             foreach ($config['branches'] as $branch):
-                                                $b_name = getCurrentLang() == "tr" ? $branch["name_tr"] : $branch["name_en"];
+                                                $b_name = getConfigField($branch, 'name');
                                                 ?>
                                                 <a href="hastane-detay?id=<?php echo $branch['id']; ?>"
                                                     class="block px-6 py-3 text-sm text-gray-700 hover:bg-nude-50 hover:text-nude-600 transition-colors">
@@ -321,7 +475,7 @@ if (!isset($config) || !is_array($config)) {
                     </div>
                 </div>
 
-                <div class="md:hidden flex items-center space-x-4">
+                <div class="nav:hidden flex items-center space-x-4">
                     <button id="mobile-menu-button"
                         class="text-nude-500 hover:text-nude-400 focus:outline-none p-2 rounded-lg focus:ring-2 focus:ring-nude-300"
                         aria-expanded="false" aria-controls="mobile-menu"
@@ -338,7 +492,7 @@ if (!isset($config) || !is_array($config)) {
         </div>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="md:hidden bg-nude-50 border-b border-nude-100" role="navigation"
+        <div id="mobile-menu" class="nav:hidden bg-nude-50 border-b border-nude-100" role="navigation"
             aria-label="<?php echo getCurrentLang() == 'tr' ? 'Mobil navigasyon' : 'Mobile navigation'; ?>">
             <div class="px-4 pt-4 pb-8 space-y-4 text-center">
                 <?php foreach ($navLinks as $link): ?>
@@ -355,7 +509,7 @@ if (!isset($config) || !is_array($config)) {
                         <div id="mobile-hospitals-list" class="mobile-submenu bg-nude-100/30">
                             <?php
                             foreach ($config['branches'] as $branch):
-                                $b_name = getCurrentLang() == "tr" ? $branch["name_tr"] : $branch["name_en"];
+                                $b_name = getConfigField($branch, 'name');
                                 ?>
                                 <a href="hastane-detay?id=<?php echo $branch['id']; ?>"
                                     class="block px-8 py-3 text-base text-gray-600 hover:text-nude-600">
@@ -489,7 +643,7 @@ if (!isset($config) || !is_array($config)) {
 
             // Close menu on resize to desktop
             window.addEventListener('resize', () => {
-                if (window.innerWidth >= 768 && isOpen) {
+                if (window.innerWidth >= 1268 && isOpen) {
                     toggleMenu();
                 }
             });

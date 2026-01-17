@@ -1,3 +1,4 @@
+w
 <?php
 return [
     "brand_name" => "DR SLAVA",
@@ -5,9 +6,9 @@ return [
     "slogan" => "Est. 2018 — Pure Elegance",
     "meta" => [
         "description" =>
-            "Dr Slava Beauty Salon - Professional skincare, hair styling, and aesthetic services. Serving you with our expert team in Nişantaşı and Bağdat Street branches.",
+            "Dr Slava Aesthetic and Beauty Center - Botox, fillers, PDO threads, mesotherapy and facial rejuvenation experts. Professional aesthetic services since 2018.",
         "keywords" =>
-            "beauty salon, skincare, hair styling, Dr Slava, aesthetics, istanbul beauty salon, nişantaşı beauty",
+            "aesthetic clinic, beauty center, botox, fillers, PDO threads, mesotherapy, skincare, Dr Slava, facial rejuvenation, lip filler, cheek filler, jawline contouring",
     ],
     "nav" => [
         "home" => "Home",

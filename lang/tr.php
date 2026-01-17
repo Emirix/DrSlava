@@ -5,9 +5,9 @@ return [
     "slogan" => '2018\'den Beri — Saf Zarafet',
     "meta" => [
         "description" =>
-            "Dr Slava Güzellik Salonu - Profesyonel cilt bakımı, saç tasarımı ve estetik hizmetleri. Nişantaşı ve Bağdat Caddesi şubelerimizde uzman kadromuzla hizmetinizdeyiz.",
+            "Dr Slava Estetik ve Güzellik Merkezi - Botoks, dolgu, PDO ip, mezoterapi ve yüz gençleştirme uzmanı. 2018'den beri profesyonel estetik hizmetler.",
         "keywords" =>
-            "güzellik salonu, cilt bakımı, saç tasarımı, Dr Slava, estetik, istanbul güzellik salonu, nişantaşı güzellik",
+            "estetik klinik, güzellik merkezi, botoks, dolgu, PDO ip, mezoterapi, cilt bakımı, Dr Slava, yüz gençleştirme, dudak dolgusu, elmacık dolgusu, jawline, lip filler",
     ],
     "nav" => [
         "home" => "Ana Sayfa",

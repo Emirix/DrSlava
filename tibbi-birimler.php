@@ -1,5 +1,6 @@
 <?php
 require_once "includes/language.php";
+require_once "includes/config-helper.php";
 
 $lang = getCurrentLang();
 $page_title = $lang == "tr" ? "Tıbbi Birimler" : "Medical Units";
@@ -14,7 +15,7 @@ $grouped_units = [];
 $units = $config['medical_units'];
 
 foreach ($units as $unit) {
-    $title = $lang == 'tr' ? $unit['title_tr'] : $unit['title_en'];
+    $title = getConfigField($unit, 'title');
     $first_letter = mb_substr($title, 0, 1, 'UTF-8');
     $first_letter = mb_strtoupper($first_letter, 'UTF-8');
 
@@ -28,7 +29,45 @@ ksort($grouped_units);
 ?>
 
 <main id="main-content" class="bg-nude-50 min-h-screen py-20 px-4">
+    <?php
+    $protocol = isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on" ? "https" : "http";
+    ?>
+
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "<?php echo $lang == 'tr' ? 'Ana Sayfa' : 'Home'; ?>",
+                "item": "<?php echo $protocol . '://' . $_SERVER['HTTP_HOST']; ?>/DrSlava/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "<?php echo $page_title; ?>",
+                "item": "<?php echo $protocol . '://' . $_SERVER['HTTP_HOST']; ?>/DrSlava/tibbi-birimler"
+            }
+        ]
+    }
+    </script>
+
     <div class="max-w-7xl mx-auto">
+        <!-- Breadcrumb Navigation -->
+        <nav class="mb-8" aria-label="<?php echo $lang == 'tr' ? 'İçerik haritası' : 'Breadcrumb'; ?>">
+            <ol class="flex items-center space-x-2 text-sm text-nude-400">
+                <li>
+                    <a href="index"
+                        class="hover:text-nude-500 transition-colors"><?php echo $lang == 'tr' ? 'Ana Sayfa' : 'Home'; ?></a>
+                </li>
+                <li><span class="mx-2">/</span></li>
+                <li class="text-nude-600 font-medium"><?php echo $page_title; ?></li>
+            </ol>
+        </nav>
+
         <section class="text-center mb-16 animate-slide-up">
             <h1 class="font-serif font-bold text-5xl md:text-6xl mb-6">
                 <?php echo $page_title; ?>
@@ -53,8 +92,8 @@ ksort($grouped_units);
                     <!-- Services Grid -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 grow w-full">
                         <?php foreach ($group as $unit):
-                            $title = $lang == 'tr' ? $unit['title_tr'] : $unit['title_en'];
-                            $desc = $lang == 'tr' ? $unit['desc_tr'] : $unit['desc_en'];
+                            $title = getConfigField($unit, 'title');
+                            $desc = getConfigField($unit, 'desc');
                             ?>
                             <div
                                 class="group relative bg-white rounded-3xl overflow-hidden luxury-shadow transition-all duration-500 hover:-translate-y-2 animate-fade-in flex flex-col h-full border border-nude-100">

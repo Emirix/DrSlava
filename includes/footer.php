@@ -2,46 +2,127 @@
 
 <?php $lang = getCurrentLang(); ?>
 
-<footer class="bg-nude-100 pt-20 pb-10 border-t border-nude-200">
+<footer class="bg-nude-100 pt-20 pb-10 border-t border-nude-200" role="contentinfo"
+  aria-label="<?php echo $lang == 'tr' ? 'Site alt bilgisi' : 'Site footer'; ?>">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
       <h2 class="font-serif font-bold text-3xl tracking-widest text-nude-500 mb-6"><?php echo $config[
-          "site_name"
+        "site_name"
       ]; ?></h2>
       <p class="text-sm font-light leading-relaxed text-gray-500 max-w-2xl mx-auto">
         <?php echo __t("footer.description"); ?>
       </p>
     </div>
 
+    <!-- Quick Navigation Links for SEO -->
+    <nav class="mb-12" aria-label="<?php echo $lang == 'tr' ? 'Hızlı bağlantılar' : 'Quick links'; ?>">
+      <ul class="flex flex-wrap justify-center gap-6 text-sm font-light">
+        <li><a href="index"
+            class="text-gray-500 hover:text-nude-500 transition-colors"><?php echo __t("nav.home"); ?></a></li>
+        <li><a href="tibbi-birimler"
+            class="text-gray-500 hover:text-nude-500 transition-colors"><?php echo __t("nav.medical_units"); ?></a></li>
+        <li><a href="galeri"
+            class="text-gray-500 hover:text-nude-500 transition-colors"><?php echo __t("nav.gallery"); ?></a></li>
+        <li><a href="subelerimiz"
+            class="text-gray-500 hover:text-nude-500 transition-colors"><?php echo __t("nav.locations"); ?></a></li>
+        <li><a href="iletisim"
+            class="text-gray-500 hover:text-nude-500 transition-colors"><?php echo __t("nav.contact"); ?></a></li>
+      </ul>
+    </nav>
+
     <div class="border-t border-nude-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
       <p class="text-xs font-light text-gray-400 italic">
         &copy; <?php echo date("Y"); ?> <?php echo __t(
-     "brand_name",
- ); ?>. <?php echo __t("footer.all_rights_reserved"); ?>
+              "brand_name",
+            ); ?>. <?php echo __t("footer.all_rights_reserved"); ?>
       </p>
-      <div class="flex space-x-6">
-        <?php foreach (["instagram", "facebook", "twitter"] as $social): ?>
-          <a href="#" class="text-gray-400 hover:text-nude-500 transition-colors" aria-label="<?php echo ucfirst(
-              $social,
-          ); ?>" rel="noopener noreferrer">
-            <div class="w-5 h-5 bg-current rounded-sm" aria-hidden="true"></div>
-          </a>
-        <?php endforeach; ?>
-      </div>
+      <nav aria-label="<?php echo $lang == 'tr' ? 'Sosyal medya' : 'Social media'; ?>">
+        <ul class="flex space-x-6">
+          <?php foreach (["instagram", "facebook", "twitter"] as $social): ?>
+            <li>
+              <a href="<?php echo isset($config['social'][$social]) ? $config['social'][$social] : '#'; ?>"
+                class="text-gray-400 hover:text-nude-500 transition-colors"
+                aria-label="<?php echo ucfirst($social); ?> <?php echo $lang == 'tr' ? 'sayfamızı ziyaret edin' : 'page visit'; ?>"
+                rel="noopener noreferrer" target="_blank">
+                <?php if ($social === 'instagram'): ?>
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" role="img">
+                    <title>Instagram</title>
+                    <path
+                      d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                  </svg>
+                <?php elseif ($social === 'facebook'): ?>
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" role="img">
+                    <title>Facebook</title>
+                    <path
+                      d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                  </svg>
+                <?php else: ?>
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" role="img">
+                    <title>Twitter</title>
+                    <path
+                      d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                  </svg>
+                <?php endif; ?>
+              </a>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+      </nav>
     </div>
   </div>
 </footer>
 
-<!-- WhatsApp Floating Button -->
+<!-- WhatsApp Floating Button with improved accessibility -->
 <a href="https://wa.me/<?php echo $config[
-    "whatsapp"
-]; ?>" class="fixed bottom-8 right-8 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform duration-300 group" target="_blank" rel="noopener noreferrer" aria-label="<?php echo __t(
+  "whatsapp"
+]; ?>"
+  class="fixed bottom-8 right-8 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform duration-300 group focus:outline-none focus:ring-4 focus:ring-green-300"
+  target="_blank" rel="noopener noreferrer" aria-label="<?php echo __t(
     "footer.whatsapp_text",
-); ?>">
-    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48s3.481 5.229 3.481 8.404c0 6.556-5.332 11.888-11.888 11.888-2.013 0-3.987-.513-5.746-1.488l-6.238 1.637zm6.759-4.825l.369.219c1.512.897 3.248 1.371 5.02 1.371 5.303 0 9.613-4.31 9.613-9.613 0-2.568-1.001-4.983-2.817-6.799s-4.231-2.817-6.799-2.817c-5.303 0-9.613 9.613 0 1.832.52 3.618 1.503 5.148l.244.38-.98 3.58 3.659-.961-.001-.001z"/>
-    </svg>
-    <span class="absolute right-full mr-4 bg-white text-gray-800 px-4 py-2 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg whitespace-nowrap pointer-events-none">
-        <?php echo __t("footer.whatsapp_text"); ?>
-    </span>
+  ); ?> - WhatsApp">
+  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" role="img">
+    <title>WhatsApp</title>
+    <path
+      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+  </svg>
+  <span
+    class="absolute right-full mr-4 bg-white text-gray-800 px-4 py-2 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg whitespace-nowrap pointer-events-none"
+    role="tooltip">
+    <?php echo __t("footer.whatsapp_text"); ?>
+  </span>
 </a>
+
+<!-- Back to top button for better UX -->
+<button id="back-to-top"
+  class="fixed bottom-24 right-8 z-40 bg-nude-500 text-white p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-nude-600 focus:outline-none focus:ring-4 focus:ring-nude-300"
+  aria-label="<?php echo $lang == 'tr' ? 'Sayfa başına dön' : 'Back to top'; ?>" type="button">
+  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+  </svg>
+</button>
+
+<script>
+  // Back to top functionality
+  (function () {
+    const backToTop = document.getElementById('back-to-top');
+    if (!backToTop) return;
+
+    window.addEventListener('scroll', function () {
+      if (window.scrollY > 300) {
+        backToTop.classList.remove('opacity-0', 'invisible');
+        backToTop.classList.add('opacity-100', 'visible');
+      } else {
+        backToTop.classList.add('opacity-0', 'invisible');
+        backToTop.classList.remove('opacity-100', 'visible');
+      }
+    });
+
+    backToTop.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  })();
+</script>
+
+</body>
+
+</html>

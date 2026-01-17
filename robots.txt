@@ -1,0 +1,28 @@
+# Dr Slava Medical Aesthetics - robots.txt
+# Last updated: 2026-01-13
+
+User-agent: *
+Allow: /
+
+# Block access to sensitive files
+Disallow: /config.php
+Disallow: /includes/
+Disallow: /lang/
+Disallow: /*.backup
+Disallow: /language_test.php
+Disallow: /nanobanana-output/
+
+# Block URL parameters that create duplicate content
+Disallow: /*?*lang=
+Allow: /index
+Allow: /tibbi-birimler
+Allow: /galeri
+Allow: /subelerimiz
+Allow: /iletisim
+Allow: /hastane-detay
+
+# Sitemap location
+Sitemap: http://localhost/DrSlava/sitemap.xml
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1

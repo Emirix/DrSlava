@@ -5,8 +5,12 @@ $lang = getCurrentLang();
 $page_title = $lang == "tr" ? "İletişim" : "Contact";
 $page_description =
   $lang == "tr"
-  ? "Dr Slava Güzellik Salonu iletişim bilgileri: Türkiye, Rusya ve Romanya şubelerimizden bize ulaşın."
-  : "Dr Slava Beauty Salon contact information: Reach us at our branches in Turkey, Russia, and Romania.";
+  ? "Dr Slava ile iletişime geçin. Randevu almak, fiyat bilgisi veya sorularınız için WhatsApp, telefon veya e-posta ile bize ulaşın."
+  : "Contact Dr Slava. Reach us via WhatsApp, phone or email for appointments, pricing information or your questions.";
+$page_keywords = $lang == "tr"
+  ? "Dr Slava iletişim, randevu al, estetik danışma, WhatsApp randevu, güzellik merkezi telefon"
+  : "Dr Slava contact, book appointment, aesthetic consultation, WhatsApp appointment, beauty center phone";
+
 include "includes/header.php";
 ?>
 

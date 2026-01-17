@@ -1,12 +1,21 @@
 <?php
 require_once "includes/language.php";
+require_once "includes/config-helper.php";
+
+// Load config
+if (!isset($config) || !is_array($config)) {
+  $config = require __DIR__ . "/config.php";
+}
 
 $lang = getCurrentLang();
 $page_title = $lang == "tr" ? "Şubelerimiz" : "Our Locations";
 $page_description =
   $lang == "tr"
-  ? "Dr Slava global şubeleri: Türkiye, Rusya ve Romanya lokasyonlarımızda hizmetinizdeyiz."
-  : "Dr Slava global locations: Serving you at our branches in Turkey, Russia, and Romania.";
+  ? "Dr Slava estetik ve güzellik şubeleri: Rusya (Rostov-na-Donu, Taganrog) ve Romanya (Bükreş) lokasyonlarımızda profesyonel hizmet."
+  : "Dr Slava aesthetic and beauty branches: Professional service at our Russia (Rostov-on-Don, Taganrog) and Romania (Bucharest) locations.";
+$page_keywords = $lang == "tr"
+  ? "Dr Slava şubeleri, estetik klinik Rusya, güzellik merkezi Romanya, Rostov-na-Donu, Taganrog, Bükreş"
+  : "Dr Slava branches, aesthetic clinic Russia, beauty center Romania, Rostov-on-Don, Taganrog, Bucharest";
 
 include "includes/header.php";
 
@@ -64,8 +73,8 @@ $country_flags = [
           <div class="lg:w-3/4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
               <?php foreach ($branches as $branch):
-                $name = $lang == "tr" ? $branch["name_tr"] : $branch["name_en"];
-                $address = $lang == "tr" ? $branch["address_tr"] : $branch["address_en"];
+                $name = getConfigField($branch, 'name');
+                $address = getConfigField($branch, 'address');
                 ?>
                 <a href="hastane-detay?id=<?php echo $branch['id']; ?>"
                   class="bg-white p-8 rounded-3xl luxury-shadow border border-nude-100 flex flex-col h-full animate-fade-in group hover:border-nude-300 transition-all">

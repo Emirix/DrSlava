@@ -2,6 +2,7 @@
 
 
 require_once "includes/language.php";
+require_once "includes/config-helper.php";
 
 // Load config
 if (!isset($config) || !is_array($config)) {
@@ -41,16 +42,48 @@ if (!$branch) {
 }
 
 $lang = getCurrentLang();
-$name = $lang == "tr" ? $branch["name_tr"] : $branch["name_en"];
-$address = $lang == "tr" ? $branch["address_tr"] : $branch["address_en"];
-$hours = $lang == "tr" ? $branch["hours_tr"] : $branch["hours_en"];
+$name = getConfigField($branch, 'name');
+$address = getConfigField($branch, 'address');
+$hours = getConfigField($branch, 'hours');
 
 $page_title = $name;
-$page_description = $address;
+$page_description = translate("Dr Slava " . $branch['name'] . " - " . $branch['address'] . ". Profesyonel estetik ve güzellik hizmetleri. Randevu için iletişime geçin.");
+$page_keywords = translate("Dr Slava, " . $branch['name'] . ", estetik klinik, güzellik merkezi, " . $branch["country"]);
 
 include "includes/header.php";
 
+// Protocol for schema URLs
+$protocol = isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on" ? "https" : "http";
+$base_url = $protocol . "://" . $_SERVER["HTTP_HOST"];
 ?>
+
+<!-- LocalBusiness Schema for SEO -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "MedicalBusiness",
+    "name": "Dr Slava - <?php echo $name; ?>",
+    "image": "<?php echo $base_url; ?>/DrSlava/<?php echo $branch['image']; ?>",
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "<?php echo $address; ?>",
+        "addressCountry": "<?php echo $branch['country'] == 'Russia' ? 'RU' : ($branch['country'] == 'Romania' ? 'RO' : 'TR'); ?>"
+    },
+    "telephone": "<?php echo $branch['phone']; ?>",
+    "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "opens": "09:00",
+        "closes": "20:00"
+    },
+    "url": "<?php echo $base_url; ?>/DrSlava/hastane-detay?id=<?php echo $branch['id']; ?>",
+    "priceRange": "$$$",
+    "parentOrganization": {
+        "@type": "Organization",
+        "name": "Dr Slava Medical Aesthetics"
+    }
+}
+</script>
 
 <main id="main-content" class="bg-nude-50 min-h-screen py-20 px-4">
     <div class="max-w-7xl mx-auto">
@@ -70,11 +103,11 @@ include "includes/header.php";
                     <nav class="flex mb-4 text-sm text-nude-400 font-light" aria-label="Breadcrumb">
                         <ol class="flex items-center space-x-2">
                             <li><a href="index" class="hover:text-nude-500">
-                                    <?php echo $lang == 'tr' ? 'Ana Sayfa' : 'Home'; ?>
+                                    <?php echo __t('nav.home'); ?>
                                 </a></li>
                             <li><span class="mx-2">/</span></li>
                             <li><a href="subelerimiz" class="hover:text-nude-500">
-                                    <?php echo $lang == 'tr' ? 'Şubelerimiz' : 'Our Locations'; ?>
+                                    <?php echo __t('nav.locations'); ?>
                                 </a></li>
                             <li><span class="mx-2">/</span></li>
                             <li class="text-nude-500 font-medium">
@@ -123,7 +156,7 @@ include "includes/header.php";
                 <div class="pt-8 space-y-6">
                     <a href="iletisim"
                         class="inline-flex items-center justify-center bg-nude-500 text-white px-10 py-4 rounded-full text-lg font-medium hover:bg-nude-600 transition-all transform hover:-translate-y-1 shadow-lg group">
-                        <?php echo $lang == 'tr' ? 'Randevu Al' : 'Book Appointment'; ?>
+                        <?php echo __t('nav.book_now'); ?>
                         <svg class="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

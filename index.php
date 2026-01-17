@@ -1,9 +1,15 @@
 <?php
 require_once "includes/language.php";
+require_once "includes/config-helper.php";
 
 $lang = getCurrentLang();
 $page_title = $lang == "tr" ? "Ana Sayfa" : "Home";
-$page_description = __t("meta.description");
+$page_description = $lang == "tr"
+    ? "Dr Slava - 2010'dan beri profesyonel estetik ve güzellik hizmetleri. Botoks, dolgu, PDO ip, mezoterapi ve daha fazlası için uzman kadromuzla tanışın."
+    : "Dr Slava - Professional aesthetic and beauty services since 2018. Meet our expert team for Botox, fillers, PDO threads, mesotherapy and more.";
+$page_keywords = $lang == "tr"
+    ? "estetik klinik, güzellik merkezi, botoks, dolgu, PDO ip, mezoterapi, cilt bakımı, Dr Slava, yüz gençleştirme"
+    : "aesthetic clinic, beauty center, botox, fillers, PDO threads, mesotherapy, skincare, Dr Slava, facial rejuvenation";
 
 include "includes/header.php";
 ?>
@@ -15,8 +21,10 @@ include "includes/header.php";
 
         <!-- Column 1: Hospital Image -->
         <div class="relative h-[400px] lg:h-full overflow-hidden group border-r border-white/20">
-            <img src="images/hospital.jpg" alt="Boart Hospital"
-                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+            <img src="images/hospital.png"
+                alt="<?php echo $lang == 'tr' ? 'Dr Slava Modern Estetik Hastanesi ve Güzellik Merkezi Dış Görünümü' : 'Dr Slava Modern Aesthetic Hospital and Beauty Center Exterior View'; ?>"
+                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" width="600"
+                height="800" fetchpriority="high" />
             <!-- Gradient Overlay (Fade to right) -->
             <div class="absolute inset-0 bg-gradient-to-l from-nude-100 via-nude-100/20 to-transparent z-10"></div>
             <div class="absolute inset-0 bg-black/5 transition-colors duration-500 z-10"></div>
@@ -64,8 +72,10 @@ include "includes/header.php";
 
         <!-- Column 3: Dr. Slava Image -->
         <div class="relative h-[400px] lg:h-full overflow-hidden group border-l border-white/20">
-            <img src="images/dr-slava.png" alt="Dr. Slava"
-                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+            <img src="images/dr-slava.png"
+                alt="<?php echo $lang == 'tr' ? 'Dr. Slava - Uzman Estetik Cerrah ve Klinik Kurucusu' : 'Dr. Slava - Expert Aesthetic Surgeon and Clinic Founder'; ?>"
+                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" width="600"
+                height="800" fetchpriority="high" />
             <!-- Gradient Overlay (Fade to left) -->
             <div class="absolute inset-0 bg-gradient-to-r from-nude-100 via-nude-100/20 to-transparent z-10"></div>
             <div class="absolute inset-0 bg-black/10 transition-colors duration-500 z-10"></div>
@@ -93,14 +103,8 @@ include "includes/header.php";
                 $featuredUnits = array_slice($config["medical_units"], 0, 4);
                 foreach ($featuredUnits as $unit):
 
-                    $title =
-                        $lang == "tr"
-                        ? $unit["title_tr"]
-                        : $unit["title_en"];
-                    $desc =
-                        $lang == "tr"
-                        ? $unit["desc_tr"]
-                        : $unit["desc_en"];
+                    $title = getConfigField($unit, 'title');
+                    $desc = getConfigField($unit, 'desc');
                     ?>
                     <article
                         class="bg-white p-8 rounded-3xl luxury-shadow group hover:-translate-y-2 transition-all duration-500 border border-nude-100">
@@ -130,7 +134,7 @@ include "includes/header.php";
     <!-- Why Choose Us -->
     <section class="py-24 grid grid-cols-1 lg:grid-cols-2 items-center" aria-labelledby="philosophy-heading">
         <div class="relative h-[600px] overflow-hidden">
-            <img src="images/modern-clinic.png" class="w-full h-full object-cover" alt="<?php echo $lang == "tr"
+            <img src="images/hospital_hero_2.png" class="w-full h-full object-cover" alt="<?php echo $lang == "tr"
                 ? "Modern Estetik Klinik"
                 : "Modern Aesthetic Clinic"; ?>" width="800" height="600" loading="lazy" />
         </div>
@@ -209,7 +213,7 @@ include "includes/header.php";
 
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 md:gap-6">
                 <?php foreach ($config["medical_units"] as $unit):
-                    $title = $lang == "tr" ? $unit["title_tr"] : $unit["title_en"];
+                    $title = getConfigField($unit, 'title');
                     $image = $unit["image"];
                     ?>
                     <a href="tibbi-birimler"
