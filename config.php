@@ -7,7 +7,7 @@
 return [
     // --- Genel Site Bilgileri ---
     'site_name' => 'Dr Slava',
-    'email' => 'info@drslava.com',
+    'email' => 'info@dr-slava.com',
     'phone' => '+90 531 763 13 35',
     'whatsapp' => '+905317631335',
     'address_main' => 'No: 103, Balçova, İzmir',
@@ -71,6 +71,46 @@ return [
 
     // --- Şubeler ---
     'branches' => [
+        [
+            'id' => 'izmir',
+            'country' => 'Türkiye',
+            'name' => 'İzmir Şubesi',
+            'address' => 'Alsancak, İzmir',
+            'phone' => '+90 531 763 13 35',
+            'hours' => 'Pzt-Cmt: 09:00 - 20:00',
+            'image' => 'images/branches/izmir.png',
+            'map_url' => 'https://maps.google.com/maps?q=Izmir&t=&z=13&ie=UTF8&iwloc=&output=embed'
+        ],
+        [
+            'id' => 'istanbul',
+            'country' => 'Türkiye',
+            'name' => 'İstanbul Şubesi',
+            'address' => 'Nişantaşı, İstanbul',
+            'phone' => '+90 531 763 13 35',
+            'hours' => 'Pzt-Cmt: 09:00 - 20:00',
+            'image' => 'images/branches/istanbul.png',
+            'map_url' => 'https://maps.google.com/maps?q=Istanbul&t=&z=13&ie=UTF8&iwloc=&output=embed'
+        ],
+        [
+            'id' => 'van',
+            'country' => 'Türkiye',
+            'name' => 'Van Şubesi',
+            'address' => 'İpekyolu, Van',
+            'phone' => '+90 531 763 13 35',
+            'hours' => 'Pzt-Cmt: 09:00 - 20:00',
+            'image' => 'images/branches/van.png',
+            'map_url' => 'https://maps.google.com/maps?q=Van&t=&z=13&ie=UTF8&iwloc=&output=embed'
+        ],
+        [
+            'id' => 'bodrum',
+            'country' => 'Türkiye',
+            'name' => 'Bodrum Şubesi',
+            'address' => 'Yalıkavak, Bodrum',
+            'phone' => '+90 531 763 13 35',
+            'hours' => 'Pzt-Cmt: 09:00 - 20:00',
+            'image' => 'images/branches/bodrum.png',
+            'map_url' => 'https://maps.google.com/maps?q=Bodrum&t=&z=13&ie=UTF8&iwloc=&output=embed'
+        ],
         [
             'id' => 'rostov',
             'country' => 'Rusya',
@@ -137,52 +177,62 @@ return [
         [
             'title' => 'Medikal Estetik',
             'desc' => 'Uzman hekimlerimiz eşliğinde, cerrahi işleme gerek kalmadan cildinizi yenileyen ve doğal güzelliğinizi ön plana çıkaran estetik uygulamalar.',
-            'image' => 'images/medical/medikal_estetik.png'
+            'image' => 'images/medical/medikal_estetik.png',
+            'sub_services' => ['Botoks Uygulamaları', 'Dudak Dolgusu', 'Mezoterapi Ürünleri', 'Somon DNA Aşısı', 'PDO İp Askı']
         ],
         [
             'title' => 'Kardiyoloji',
             'desc' => 'Kalp ve damar sistemi sağlığınız için en yeni tanı ve tedavi yöntemleriyle kesintisiz uzman desteği.',
-            'image' => 'images/medical/kardiyoloji.png'
+            'image' => 'images/medical/kardiyoloji.png',
+            'sub_services' => ['EKG ve Efor Testi', 'Ekokardiyografi (EKO)', 'Holter İzlemi', 'Koroner Anjiyografi', 'Hipertansiyon Yönetimi']
         ],
         [
             'title' => 'Onkoloji',
             'desc' => 'Kanser tanı ve tedavisinde multidisipliner bir yaklaşımla, ileri teknoloji ve şefkatli bakımın buluştuğu merkezimiz.',
-            'image' => 'images/medical/onkoloji.png'
+            'image' => 'images/medical/onkoloji.png',
+            'sub_services' => ['Kemoterapi Uygulamaları', 'İmmünoterapi', 'Erken Teşhis Taramaları', 'Hedefe Yönelik Tedaviler', 'Palyatif Bakım']
         ],
         [
             'title' => 'Kulak Burun Boğaz',
             'desc' => 'İşitme, denge, koku ve ses bozukluklarının yanı sıra baş ve boyun bölgesi hastalıklarında kapsamlı tedavi çözümleri.',
-            'image' => 'images/medical/kbb.png'
+            'image' => 'images/medical/kbb.png',
+            'sub_services' => ['Rinoplasti (Burun Estetiği)', 'Sinüzit Tedavisi', 'İşitme Kaybı Muayenesi', 'Bademcik ve Geniz Eti', 'Ses Teli Cerrahisi']
         ],
         [
             'title' => 'Göz hastalıkları',
             'desc' => 'Görme sağlığınızı korumak ve geliştirmek için en hassas ölçüm yöntemleri ve lazer teknolojileriyle donatılmış birimimiz.',
-            'image' => 'images/medical/goz_hastaliklari.png'
+            'image' => 'images/medical/goz_hastaliklari.png',
+            'sub_services' => ['Lazer Göz Ameliyatı (LASIK)', 'Katarakt Cerrahisi', 'Glokom Tedavisi', 'Kornea Nakli', 'Göz Çevresi Estetiği']
         ],
         [
             'title' => 'Kalp damar cerrahi',
             'desc' => 'Kalp kapağı, damar tıkanıklıkları ve diğer kompleks kalp hastalıklarında hayat kurtaran cerrahi müdahaleler ve ileri bakım.',
-            'image' => 'images/medical/kalp_damar_cerrahi.png'
+            'image' => 'images/medical/kalp_damar_cerrahi.png',
+            'sub_services' => ['By-pass Ameliyatı', 'Kalp Kapağı Onarımı', 'Anevrizma Cerrahisi', 'Varis Tedavisi', 'Periferik Damar Cerrahisi']
         ],
         [
             'title' => 'Genel cerrahi',
             'desc' => 'Sindirim sistemi, yumuşak doku ve diğer cerrahi gerektiren durumlarda laparoskopik ve modern tekniklerle güvenli operasyonlar.',
-            'image' => 'images/medical/genel_cerrahi.png'
+            'image' => 'images/medical/genel_cerrahi.png',
+            'sub_services' => ['Safra Kesesi Ameliyatı', 'Fıtık Cerrahisi', 'Tiroid Ameliyatları', 'Meme Cerrahisi', 'Kolorektal Cerrahi']
         ],
         [
             'title' => 'Çocuk cerrahi',
             'desc' => 'Bebeklikten ergenliğe kadar tüm çocukların cerrahi ihtiyaçlarında, onlara özel yaklaşımla sunulan hassas cerrahi hizmeti.',
-            'image' => 'images/medical/cocuk_cerrahi.png'
+            'image' => 'images/medical/cocuk_cerrahi.png',
+            'sub_services' => ['Yenidoğan Cerrahisi', 'Çocukluk Çağı Fıtıkları', 'Hipospadias Onarımı', 'Sünnet (Cerrahi)', 'İnvajinasyon Tedavisi']
         ],
         [
             'title' => 'Kadın doğum',
             'desc' => 'Gebelik takibinden jinekolojik cerrahiye kadar kadın sağlığının her aşamasında yanınızda olan uzman kadromuz.',
-            'image' => 'images/medical/kadin_dogum.png'
+            'image' => 'images/medical/kadin_dogum.png',
+            'sub_services' => ['Gebelik Takibi ve Doğum', 'Riskli Gebelik Yönetimi', 'Jinekolojik Onkoloji', 'Kısırlık Tedavisi', 'Menopoz Yönetimi']
         ],
         [
             'title' => 'Obezite cerrahi',
             'desc' => 'Sağlıklı bir yaşam ve ideal kilo hedefinize ulaşmanız için uygulanan modern obezite cerrahisi yöntemleri ve sonrası destek programları.',
-            'image' => 'images/medical/obezite_cerrahi.png'
+            'image' => 'images/medical/obezite_cerrahi.png',
+            'sub_services' => ['Tüp Mide Ameliyatı', 'Mide Bypassı', 'Mide Balonu', 'Metabolik Cerrahi', 'Revizyonel Cerrahi']
         ],
     ]
 ];

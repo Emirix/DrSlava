@@ -99,7 +99,8 @@ ksort($grouped_units);
                                 class="group relative bg-white rounded-3xl overflow-hidden luxury-shadow transition-all duration-500 hover:-translate-y-2 animate-fade-in flex flex-col h-full border border-nude-100">
                                 <div class="h-48 overflow-hidden relative">
                                     <img src="<?php echo $unit['image']; ?>" alt="<?php echo $title; ?>"
-                                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        loading="lazy" decoding="async" />
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                                 </div>
                                 <div class="p-6 flex flex-col flex-grow">
@@ -110,15 +111,37 @@ ksort($grouped_units);
                                     <p class="text-gray-500 font-light text-sm leading-relaxed mb-6 flex-grow">
                                         <?php echo $desc; ?>
                                     </p>
-                                    <a href="iletisim"
-                                        class="inline-flex items-center text-xs font-semibold uppercase tracking-widest text-nude-500 hover:text-nude-600 transition-colors">
-                                        <?php echo $lang == 'tr' ? 'Detaylı Bilgi' : 'Learn More'; ?>
-                                        <svg class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                        </svg>
-                                    </a>
+
+                                    <?php if (isset($unit['sub_services']) && !empty($unit['sub_services'])): ?>
+                                        <div class="mb-8 mt-6">
+                                            <h4
+                                                class="text-[10px] font-bold text-nude-500 uppercase tracking-[0.3em] mb-4 text-center">
+                                                <?php echo $lang == 'tr' ? 'Hizmetlerimiz' : 'Our Services'; ?>
+                                            </h4>
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                <?php foreach ($unit['sub_services'] as $service): ?>
+                                                    <div
+                                                        class="flex flex-col justify-center items-center text-center p-4 bg-nude-50/30 rounded-2xl border border-nude-100/50 group/item hover:bg-white hover:shadow-lg hover:shadow-nude-500/5 hover:border-nude-300 transition-all duration-500">
+                                                        <span class="text-[10px] text-gray-800 font-semibold leading-tight">
+                                                            <?php echo translate($service); ?>
+                                                        </span>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <div class="mt-auto">
+                                        <a href="iletisim"
+                                            class="inline-flex items-center justify-center w-full py-4 bg-white border border-nude-200 rounded-2xl text-xs font-bold uppercase tracking-widest text-nude-500 hover:bg-nude-500 hover:text-white hover:border-nude-500 transition-all duration-500 group">
+                                            <?php echo $lang == 'tr' ? 'İletişime Geçin' : 'Contact Us'; ?>
+                                            <svg class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                            </svg>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         <?php endforeach; ?>

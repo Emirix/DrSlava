@@ -41,7 +41,7 @@ $base_url = $protocol . "://" . $_SERVER["HTTP_HOST"];
           class="masonry-item group relative overflow-hidden rounded-2xl cursor-pointer bg-white border border-nude-100 luxury-shadow animate-fade-in">
           <img src="<?php echo $image["src"]; ?>" alt="<?php echo getConfigField($image, 'title'); ?>"
             class="w-full h-auto transition-transform duration-1000 group-hover:scale-105" loading="lazy" width="800"
-            height="600" />
+            height="600" decoding="async" />
           <figcaption
             class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
             <p

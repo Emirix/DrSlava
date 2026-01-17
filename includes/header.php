@@ -14,6 +14,15 @@ $current_lang = getCurrentLang();
 
 <head>
     <meta charset="UTF-8">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T44GDG9G0X"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-T44GDG9G0X');
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -161,8 +170,8 @@ $current_lang = getCurrentLang();
         ?>
         <!-- WebSite Schema for Homepage -->
         <script type="application/ld+json">
-                                                                <?php echo json_encode($json_ld_website, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT); ?>
-                                                                    </script>
+                                                                                <?php echo json_encode($json_ld_website, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT); ?>
+                                                                                    </script>
     <?php endif; ?>
 
     <?php if ($current_page === 'iletisim'):
@@ -186,15 +195,14 @@ $current_lang = getCurrentLang();
         ?>
         <!-- ContactPage Schema -->
         <script type="application/ld+json">
-                                                                <?php echo json_encode($json_ld_contact, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT); ?>
-                                                                    </script>
+                                                                                <?php echo json_encode($json_ld_contact, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT); ?>
+                                                                                    </script>
     <?php endif; ?>
 
     <!-- Preconnect to external domains for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
-    <link rel="preconnect" href="https://flagcdn.com">
 
     <!-- DNS Prefetch -->
     <link rel="dns-prefetch" href="https://images.unsplash.com">
@@ -202,8 +210,6 @@ $current_lang = getCurrentLang();
     <!-- Preload critical fonts -->
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Poppins:wght@200;300;400;500&display=swap"
         rel="stylesheet">
@@ -368,8 +374,8 @@ $current_lang = getCurrentLang();
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="index"
-                        class="font-serif text-3xl tracking-widest text-nude-500 hover:text-nude-400 transition-colors">
+                    <a style="color:black; font-weight: bold;" href="index"
+                        class="font-serif text-3xl tracking-widest transition-colors">
                         <?php echo __t("brand_name"); ?>
                     </a>
                 </div>
@@ -427,11 +433,11 @@ $current_lang = getCurrentLang();
                                 class="flex items-center gap-2 text-sm font-light tracking-widest hover:text-nude-500 transition-colors duration-300">
                                 <?php if ($currentLang == 'ku'): ?>
                                     <img src="images/flags/ku.svg" width="20" height="14" alt="Kurdî"
-                                        class="rounded-sm shadow-sm object-cover">
+                                        class="rounded-sm shadow-sm object-cover" loading="eager" decoding="async">
                                 <?php else: ?>
-                                    <img src="https://flagcdn.com/w40/<?php echo $currentLang == 'en' ? 'gb' : $currentLang; ?>.png"
+                                    <img src="images/flags/<?php echo $currentLang == 'en' ? 'gb' : $currentLang; ?>.png"
                                         width="20" height="14" alt="<?php echo $currentInfo['name']; ?>"
-                                        class="rounded-sm shadow-sm">
+                                        class="rounded-sm shadow-sm" loading="eager" decoding="async">
                                 <?php endif; ?>
                                 <span class="uppercase"><?php echo $currentLang; ?></span>
                                 <svg class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180"
@@ -450,11 +456,11 @@ $current_lang = getCurrentLang();
                                             class="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-nude-50 hover:text-nude-600 transition-colors <?php echo $code == $currentLang ? 'bg-nude-50/50 text-nude-600 font-medium' : ''; ?>">
                                             <?php if ($code == 'ku'): ?>
                                                 <img src="images/flags/ku.svg" width="18" height="12" alt="Kurdî"
-                                                    class="rounded-sm shadow-sm object-cover">
+                                                    class="rounded-sm shadow-sm object-cover" loading="lazy" decoding="async">
                                             <?php else: ?>
-                                                <img src="https://flagcdn.com/w40/<?php echo $code == 'en' ? 'gb' : $code; ?>.png"
+                                                <img src="images/flags/<?php echo $code == 'en' ? 'gb' : $code; ?>.png"
                                                     width="18" height="12" alt="<?php echo $info['name']; ?>"
-                                                    class="rounded-sm shadow-sm">
+                                                    class="rounded-sm shadow-sm" loading="lazy" decoding="async">
                                             <?php endif; ?>
                                             <span><?php echo $info['name']; ?></span>
                                         </a>
@@ -545,10 +551,11 @@ $current_lang = getCurrentLang();
                                 class="flex items-center gap-3 px-6 py-3 text-sm text-gray-600 hover:bg-nude-100/50 <?php echo $code == getCurrentLang() ? 'bg-nude-50 text-nude-600 font-medium' : ''; ?>">
                                 <?php if ($code == 'ku'): ?>
                                     <img src="images/flags/ku.svg" width="20" height="14" alt="Kurdî"
-                                        class="rounded-sm shadow-sm object-cover">
+                                        class="rounded-sm shadow-sm object-cover" loading="lazy" decoding="async">
                                 <?php else: ?>
-                                    <img src="https://flagcdn.com/w40/<?php echo $code == 'en' ? 'gb' : $code; ?>.png"
-                                        width="20" height="14" alt="<?php echo $info['name']; ?>" class="rounded-sm shadow-sm">
+                                    <img src="images/flags/<?php echo $code == 'en' ? 'gb' : $code; ?>.png" width="20"
+                                        height="14" alt="<?php echo $info['name']; ?>" class="rounded-sm shadow-sm"
+                                        loading="lazy" decoding="async">
                                 <?php endif; ?>
                                 <span><?php echo $info['name']; ?></span>
                             </a>

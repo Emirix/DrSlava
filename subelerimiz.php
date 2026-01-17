@@ -11,11 +11,11 @@ $lang = getCurrentLang();
 $page_title = $lang == "tr" ? "Şubelerimiz" : "Our Locations";
 $page_description =
   $lang == "tr"
-  ? "Dr Slava estetik ve güzellik şubeleri: Rusya (Rostov-na-Donu, Taganrog) ve Romanya (Bükreş) lokasyonlarımızda profesyonel hizmet."
-  : "Dr Slava aesthetic and beauty branches: Professional service at our Russia (Rostov-on-Don, Taganrog) and Romania (Bucharest) locations.";
+  ? "Dr Slava estetik ve güzellik şubeleri: Türkiye (İzmir, İstanbul, Van, Bodrum), Rusya ve Romanya lokasyonlarımızda profesyonel hizmet."
+  : "Dr Slava aesthetic and beauty branches: Professional service at our Turkey (Izmir, Istanbul, Van, Bodrum), Russia and Romania locations.";
 $page_keywords = $lang == "tr"
-  ? "Dr Slava şubeleri, estetik klinik Rusya, güzellik merkezi Romanya, Rostov-na-Donu, Taganrog, Bükreş"
-  : "Dr Slava branches, aesthetic clinic Russia, beauty center Romania, Rostov-on-Don, Taganrog, Bucharest";
+  ? "Dr Slava şubeleri, estetik klinik Türkiye, İzmir, İstanbul, Van, Bodrum, Rusya, Romanya"
+  : "Dr Slava branches, aesthetic clinic Turkey, Izmir, Istanbul, Van, Bodrum, Russia, Romania";
 
 include "includes/header.php";
 
@@ -31,9 +31,9 @@ foreach ($config["branches"] as $branch) {
 
 // Flag mapping
 $country_flags = [
-  'Türkiye' => 'https://flagcdn.com/w80/tr.png',
-  'Russia' => 'https://flagcdn.com/w80/ru.png',
-  'Romania' => 'https://flagcdn.com/w80/ro.png'
+  'Türkiye' => 'images/flags/tr.png',
+  'Rusya' => 'images/flags/ru.png',
+  'Romanya' => 'images/flags/ro.png'
 ];
 ?>
 
@@ -45,7 +45,7 @@ $country_flags = [
       </h1>
       <p class="text-gray-500 font-light">
         <?php echo $lang == "tr"
-          ? "Size en yakın " . $config["site_name"] . " vahasına ulaşın."
+          ? "Size en yakın " . $config["site_name"] . " şubesine ulaşın."
           : "Find your nearest " . $config["site_name"] . " sanctuary."; ?>
       </p>
     </section>
@@ -59,10 +59,10 @@ $country_flags = [
               <div class="flex items-center gap-4">
                 <?php if (isset($country_flags[$country])): ?>
                   <img src="<?php echo $country_flags[$country]; ?>" alt="<?php echo $country; ?> bayrağı"
-                    class="h-8 w-auto rounded shadow-sm border border-nude-200">
+                    class="h-8 w-auto rounded shadow-sm border border-nude-200" loading="lazy" decoding="async">
                 <?php endif; ?>
                 <h2 class="font-serif font-bold text-3xl text-gray-800 uppercase tracking-widest">
-                  <?php echo $country; ?>
+                  <?php echo translate($country); ?>
                 </h2>
               </div>
               <div class="h-1 w-12 bg-nude-300 rounded-full"></div>
@@ -76,12 +76,12 @@ $country_flags = [
                 $name = getConfigField($branch, 'name');
                 $address = getConfigField($branch, 'address');
                 ?>
-                <a href="hastane-detay?id=<?php echo $branch['id']; ?>"
-                  class="bg-white p-8 rounded-3xl luxury-shadow border border-nude-100 flex flex-col h-full animate-fade-in group hover:border-nude-300 transition-all">
+                <div
+                  class="bg-white p-8 rounded-3xl luxury-shadow border border-nude-100 flex flex-col h-full animate-fade-in transition-all">
                   <div class="space-y-4">
                     <div class="flex items-center gap-3">
                       <div
-                        class="w-10 h-10 rounded-xl bg-nude-50 flex items-center justify-center text-nude-500 text-lg shadow-inner group-hover:bg-nude-100 transition-colors">
+                        class="w-10 h-10 rounded-xl bg-nude-50 flex items-center justify-center text-nude-500 text-lg shadow-inner">
                         🏥
                       </div>
                       <h3 class="font-serif font-bold text-xl text-gray-800"><?php echo $name; ?></h3>
@@ -93,7 +93,7 @@ $country_flags = [
                       </div>
                     </address>
                   </div>
-                </a>
+                </div>
               <?php endforeach; ?>
             </div>
           </div>

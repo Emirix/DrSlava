@@ -24,7 +24,7 @@ include "includes/header.php";
             <img src="images/hospital.png"
                 alt="<?php echo $lang == 'tr' ? 'Dr Slava Modern Estetik Hastanesi ve Güzellik Merkezi Dış Görünümü' : 'Dr Slava Modern Aesthetic Hospital and Beauty Center Exterior View'; ?>"
                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" width="600"
-                height="800" fetchpriority="high" />
+                height="800" fetchpriority="high" decoding="async" />
             <!-- Gradient Overlay (Fade to right) -->
             <div class="absolute inset-0 bg-gradient-to-l from-nude-100 via-nude-100/20 to-transparent z-10"></div>
             <div class="absolute inset-0 bg-black/5 transition-colors duration-500 z-10"></div>
@@ -72,10 +72,10 @@ include "includes/header.php";
 
         <!-- Column 3: Dr. Slava Image -->
         <div class="relative h-[400px] lg:h-full overflow-hidden group border-l border-white/20">
-            <img src="images/dr-slava.png"
+            <img src="images/dr-slava-eski.png"
                 alt="<?php echo $lang == 'tr' ? 'Dr. Slava - Uzman Estetik Cerrah ve Klinik Kurucusu' : 'Dr. Slava - Expert Aesthetic Surgeon and Clinic Founder'; ?>"
                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" width="600"
-                height="800" fetchpriority="high" />
+                height="800" fetchpriority="high" decoding="async" />
             <!-- Gradient Overlay (Fade to left) -->
             <div class="absolute inset-0 bg-gradient-to-r from-nude-100 via-nude-100/20 to-transparent z-10"></div>
             <div class="absolute inset-0 bg-black/10 transition-colors duration-500 z-10"></div>
@@ -136,7 +136,7 @@ include "includes/header.php";
         <div class="relative h-[600px] overflow-hidden">
             <img src="images/hospital_hero_2.png" class="w-full h-full object-cover" alt="<?php echo $lang == "tr"
                 ? "Modern Estetik Klinik"
-                : "Modern Aesthetic Clinic"; ?>" width="800" height="600" loading="lazy" />
+                : "Modern Aesthetic Clinic"; ?>" width="800" height="600" loading="lazy" decoding="async" />
         </div>
         <div class="p-12 lg:p-24 space-y-8">
             <span class="text-nude-400 font-medium tracking-widest uppercase text-sm"><?php echo $lang ==
@@ -221,7 +221,7 @@ include "includes/header.php";
                         <div class="aspect-square overflow-hidden relative">
                             <img src="<?php echo $image; ?>" alt="<?php echo $title; ?>"
                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                loading="lazy">
+                                loading="lazy" decoding="async">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                             </div>

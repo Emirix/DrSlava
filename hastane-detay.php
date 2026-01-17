@@ -67,7 +67,7 @@ $base_url = $protocol . "://" . $_SERVER["HTTP_HOST"];
     "address": {
         "@type": "PostalAddress",
         "streetAddress": "<?php echo $address; ?>",
-        "addressCountry": "<?php echo $branch['country'] == 'Russia' ? 'RU' : ($branch['country'] == 'Romania' ? 'RO' : 'TR'); ?>"
+        "addressCountry": "<?php echo $branch['country'] == 'Rusya' ? 'RU' : ($branch['country'] == 'Romanya' ? 'RO' : 'TR'); ?>"
     },
     "telephone": "<?php echo $branch['phone']; ?>",
     "openingHoursSpecification": {
@@ -164,13 +164,6 @@ $base_url = $protocol . "://" . $_SERVER["HTTP_HOST"];
                         </svg>
                     </a>
 
-                    <?php if (isset($branch['map_url'])): ?>
-                        <div class="mt-8 rounded-3xl overflow-hidden border border-nude-200 shadow-inner h-80">
-                            <iframe src="<?php echo $branch['map_url']; ?>" width="100%" height="100%" style="border:0;"
-                                allowfullscreen="" loading="lazy">
-                            </iframe>
-                        </div>
-                    <?php endif; ?>
                 </div>
             </div>
         </div>

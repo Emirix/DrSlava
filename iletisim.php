@@ -93,7 +93,7 @@ include "includes/header.php";
 
     <section class="flex justify-center items-center animate-fade-in h-full">
       <div class="relative w-full max-w-lg rounded-3xl overflow-hidden luxury-shadow border border-nude-100">
-        <img src="images/dr-slava.png" alt="Dr. Slava"
+        <img src="images/dr-slava-eski.png" alt="Dr. Slava"
           class="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700">
         <div class="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-3xl"></div>
       </div>
